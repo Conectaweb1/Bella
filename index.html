@@ -327,6 +327,40 @@
     text-align: center;
   }
 }
+@media (max-width: 768px) {
+
+  /* Impede layout maior que a tela */
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Corrige altura real no mobile */
+  .hero-v2 {
+    height: auto;
+    min-height: 100svh;
+  }
+
+  /* Remove qualquer escala invisível */
+  .hero-image {
+    transform: none !important;
+  }
+
+  /* Corrige cálculo de fonte que causa zoom */
+  .hero-floating-box h1 {
+    font-size: 2.6rem;
+    max-width: 90vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-floating-box {
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 16px;
+  }
+}
 
     </style>
 </head>
