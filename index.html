@@ -361,6 +361,33 @@
     padding: 0 16px;
   }
 }
+.delivery-address {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.delivery-address h4 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+}
+
+.delivery-address textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-family: inherit;
+  font-size: 14px;
+  resize: none;
+}
+
+.delivery-address textarea:focus {
+  outline: none;
+  border-color: #c7a17a; /* tom elegante */
+}
 
     </style>
 </head>
@@ -399,7 +426,7 @@
 
     <section class="hero-v2" id="home">
         <div class="hero-side">
-            <img src="https://images.unsplash.com/photo-1573408302185-9127fe5a9200?auto=format&fit=crop&q=80&w=1200" class="hero-image" alt="Luxury Model">
+            <img src="https://www.publicdomainpictures.net/pictures/200000/nahled/plain-black-background.jpg" class="hero-image" alt="Luxury Model">
         </div>
         <div class="hero-floating-box">
             <span class="animate__animated animate__fadeInUp">Bella essencia</span>
@@ -570,7 +597,16 @@
                     <span id="total-val">R$ 0,00</span>
                 </div>
             </div>
-            
+            <div class="delivery-address">
+  <h4>Endereço de entrega</h4>
+
+  <textarea 
+    id="enderecoEntrega" 
+    placeholder="Rua, número, bairro, referência..."
+    rows="3">
+  </textarea>
+</div>
+
             <div style="margin-top: 30px;">
                 <input type="text" id="cust-name" placeholder="Seu Nome Completo" style="width: 100%; padding: 15px; margin-bottom: 10px; border: 1px solid #ddd;">
                 <button class="btn-luxury" style="width: 100%; background: #000; color: #fff;" onclick="finalizarCompra()">
@@ -719,24 +755,49 @@
             reveal();
         }
 
-        // --- CHECKOUT WHATSAPP ---
-        function finalizarCompra() {
-            const nome = document.getElementById('cust-name').value;
-            if(!nome) return alert("Por favor, informe seu nome para o atendimento personalizado.");
-            if(cart.length === 0) return alert("Sua sacola está vazia.");
+       // --- CHECKOUT WHATSAPP ---
+function finalizarCompra() {
+    const nomeEl = document.getElementById('cust-name');
+    const enderecoEl = document.getElementById('enderecoEntrega');
 
-            let msg = `*Pedido Bella Essência*\n`;
-            msg += `Olá, meu nome é ${nome}.\n`;
-            msg += `Gostaria de finalizar o pedido das peças:\n\n`;
-            cart.forEach(item => msg += `• ${item.title} (R$ ${item.price.toFixed(2)})\n`);
-            msg += `\n*Total: ${document.getElementById('total-val').innerText}*`;
-            
-            const url = `https://wa.me/5598985817018?text=${encodeURIComponent(msg)}`;
-            window.open(url, '_blank');
-        }
-      function toggleMobileMenu(){
-  document.querySelector('.nav-links').classList.toggle('mobile-open');
+
+    if (!nomeEl) {
+        alert("Erro: campo de nome não encontrado.");
+        return;
+    }
+
+    if (!enderecoEl) {
+        alert("Erro: campo de endereço não encontrado.");
+        return;
+    }
+
+    const nome = nomeEl.value.trim();
+    const endereco = enderecoEl.value.trim();
+
+    if (!nome)
+        return alert("Por favor, informe seu nome.");
+
+    if (!endereco)
+        return alert("Por favor, informe o endereço de entrega.");
+
+    if (cart.length === 0)
+        return alert("Sua sacola está vazia.");
+
+    let msg = `*Pedido Bella Essência*\n`;
+    msg += `Olá, meu nome é ${nome}.\n`;
+    msg += `Gostaria de finalizar o pedido das peças:\n\n`;
+
+    cart.forEach(item => {
+        msg += `• ${item.title} (R$ ${item.price.toFixed(2)})\n`;
+    });
+
+    msg += `\n*Total: ${document.getElementById('total-val').innerText}*`;
+    msg += `\n\n📍 *Endereço de entrega:*\n${endereco}`;
+
+    const url = `https://wa.me/5598985817018?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
 }
+
   
     </script>
 </body>
